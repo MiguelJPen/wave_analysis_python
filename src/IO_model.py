@@ -1,6 +1,6 @@
 import torch
 
-PATH = 'model/model_scripted.pt'
+PATH = 'trainedModel/model_scripted.pt'
 
 
 def save_model(model):

@@ -3,20 +3,17 @@ import numpy as np
 import torch
 from sklearn.metrics import mean_absolute_error
 
-from preprocess.data import get_data, Dataset
+from preprocess.data import get_data_2param, Dataset
 from src.define_loss import loss_function
 from src.define_optimizer import optimizer
-from src.invertedModels.inCh300 import build_300in_net, build_300in_2out_net
-from src.invertedModels.inCh600 import build_600in_net
+from src import define_model
 
-x0_range = 7.5 - 2.5
 l0_range = 5 - 0.2
 E0_range = 9 - 1
 
-(train_dt, val_dt, test_dt, train_tg, val_tg, test_tg), target_dev = get_data(Dataset.lhs_50K_t20)
+(train_dt, val_dt, test_dt, train_tg, val_tg, test_tg), target_dev = get_data_2param(Dataset.lhs_x0_7_4_2param)
 
-torch.cuda.empty_cache()
-net = build_300in_net()
+net = define_model.create_net_300_2output()
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print("Dispositivo de procesamiento:", device)
@@ -63,15 +60,21 @@ print('Finished Training')
 net.eval()
 # Evaluar el modelo
 with torch.no_grad():
+    # Obtener las predicciones para los datos de prueba
     outputs = net(test_dt.unsqueeze(1))
+    # Calcular la pérdida para los datos de prueba
     test_loss = loss_function()(outputs, test_tg)
 
     errors = [mean_absolute_error(x, y) for x, y in zip(torch.transpose(test_tg.cpu(), 0, 1), torch.transpose(outputs.cpu(), 0, 1))]
 
+    # Calcular la precisión en los datos de prueba
+
+    # CALCULAR EL ERROR RELATIVO, DIVIDIENDO ENTRE LA LONG/2
+
     real_error = np.array(errors) * target_dev
     print("Error en el conjunto de test: ", real_error)
 
-    relative_error = real_error / [x0_range, l0_range, E0_range]
+    relative_error = real_error / [l0_range, E0_range]
     print("Error relativo por parámetro: ", ["{0:.2%}".format(ele) for ele in relative_error])
 
     # Imprimir los resultados

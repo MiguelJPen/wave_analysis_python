@@ -5,14 +5,19 @@ from sklearn.model_selection import train_test_split
 
 
 class Dataset:
-    lhs_10K_100 = "preprocess/results_lhs_10K_100.csv"
-    lhs_10K_300 = "preprocess/results_lhs_10K_300.csv"
-    lhs_50K_300 = "preprocess/results_lhs_50K_300.csv"
-    lhs_100K_100 = "preprocess/results_lhs_100K_100.csv"
-    equispaced_26K_300 = "preprocess/results_26K_300.csv"
-    equispaced_33K_100 = "preprocess/results_33K_100.csv"
-    equispaced_33K_300 = "preprocess/results_33K_300.csv"
-    equispaced_75K_100 = "preprocess/results_75K_100.csv"
+    eq_300_30K = "preprocess/rawData/eq_300_30K.csv"
+    eq_300_64K = "preprocess/rawData/eq_300_64K.csv"
+    eq_600_30K = "preprocess/rawData/eq_600_30K.csv"
+
+    lhs_300_30K = "preprocess/rawData/lhs_300_30K.csv"
+    lhs_300_64K = "preprocess/rawData/lhs_300_64K.csv"
+
+    lhs_300_t20_25K = "preprocess/rawData/lhs_300_t20_25K.csv"
+    lhs_600_t20_50K = "preprocess/rawData/lhs_600_t20_50K.csv"
+
+    lhs_2out_300_x0_26 = "preprocess/rawData/lhs_2out_300_x0_2.6.csv"
+    lhs_2out_300_x0_5 = "preprocess/rawData/lhs_2out_300_x0_5.csv"
+    lhs_2out_300_x0_74 = "preprocess/rawData/lhs_2out_300_x0_7.4.csv"
 
 
 def load_data(data, targets):
@@ -52,9 +57,24 @@ def get_data(dataset):
     target, target_mean, target_dev = normalize(target)
     data, data_mean, data_dev = normalize(data)
 
-    print(target_mean, target_dev)
-    print(data_mean, data_dev)
-    print(target)
-    print(data)
+    return load_data(data, target), target_dev
+
+
+def load_csv_2param(csv_filename):
+    df = pd.read_csv(csv_filename)
+
+    target_columns = df.columns[:2]
+    data_columns = df.columns[3:-1]
+
+    targets = df[target_columns].values
+    data = df[data_columns].values
+    return data, targets
+
+
+def get_data_2param(dataset):
+    data, target = load_csv_2param(dataset)
+
+    target, target_mean, target_dev = normalize(target)
+    data, data_mean, data_dev = normalize(data)
 
     return load_data(data, target), target_dev
