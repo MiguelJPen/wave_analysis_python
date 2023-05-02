@@ -8,4 +8,4 @@ def optimizer(model):
     """
     learning_rate = 0.03 # 0.003
 
-    return optim.SGD(model.parameters(), momentum=0.9, lr=learning_rate)
+    return optim.SGD(model.parameters(), momentum=0.75, lr=learning_rate)

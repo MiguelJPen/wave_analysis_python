@@ -3,9 +3,9 @@ import numpy as np
 import torch
 from sklearn.metrics import mean_absolute_error
 
-from preprocess.data import get_data, Dataset
-from src.define_loss import loss_function
-from src.define_optimizer import optimizer
+from src.data import get_data, Dataset
+from src.invertedModels.define_loss import loss_function
+from src.invertedModels.define_optimizer import optimizer
 from src import define_model
 from torch.utils.data import DataLoader, TensorDataset
 
