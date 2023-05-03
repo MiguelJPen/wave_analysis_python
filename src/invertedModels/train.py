@@ -6,13 +6,13 @@ from src.invertedModels.define_loss import loss_function
 from src.invertedModels.define_optimizer import optimizer
 
 
-def train_model(model, train_set, validation_set, target_dev):
+def train_model(model, num_epochs, learning_rate, momentum, train_set, validation_set, target_dev):
     # Definir la función de pérdida y el optimizador
     loss_fn = loss_function()
-    optim = optimizer(model)
+    optim = optimizer(model, learning_rate, momentum)
 
     # Entrenar la red
-    for epoch in range(10000):
+    for epoch in range(num_epochs):
         outputs = model(train_set[0].unsqueeze(1).cuda())
         loss = loss_fn(outputs, train_set[1])
 

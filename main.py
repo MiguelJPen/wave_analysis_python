@@ -11,8 +11,11 @@ from src.models.model import build_model
 ###########################
 training_dataset = Dataset.lhs_300_100K
 eval_dataset = Dataset.lhs_300_100K
-train_model_bool = True
+train_model_bool = False
 evaluate_model_bool = True
+num_epochs = 10000
+learning_rate = 0.03
+momentum = 0.75
 ###########################
 
 ((train_set, validation_set, test_set), target_dev), target_range = data_from_file(training_dataset)
@@ -24,7 +27,7 @@ print("Dispositivo de procesamiento: ", device)
 if train_model_bool:
     model = build_model()
     model = model.to(device)
-    model = train_model(model, train_set, validation_set, target_dev)
+    model = train_model(model, num_epochs, learning_rate, momentum, train_set, validation_set, target_dev)
 
     IO_model.save_model(model, training_dataset)
 
