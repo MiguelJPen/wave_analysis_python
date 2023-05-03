@@ -9,9 +9,9 @@ from src.models.model import build_model
 ###########################
 #  CONTROL FOR THE MODEL  #
 ###########################
-training_dataset = Dataset.lhs_300_100K
-eval_dataset = Dataset.lhs_300_100K
-train_model_bool = False
+training_dataset = Dataset.lhs_300_64K
+eval_dataset = Dataset.lhs_300_64K
+train_model_bool = True
 evaluate_model_bool = True
 num_epochs = 10000
 learning_rate = 0.03

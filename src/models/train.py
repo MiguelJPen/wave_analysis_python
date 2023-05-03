@@ -15,9 +15,9 @@ def train_model(model, num_epochs, learning_rate, momentum, train_set, validatio
         outputs = model(train_set[0].unsqueeze(1).cuda())
         loss = loss_fn(outputs, train_set[1])
 
-        optim.step()
-        loss.backward()
         optim.zero_grad()
+        loss.backward()
+        optim.step()
 
         if epoch % 100 == 99:
             model.eval()

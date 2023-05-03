@@ -17,10 +17,12 @@ def evaluate_model(model, test_set, target_range, target_dev):
 
         error = mean_absolute_error(test_set[1].cpu(), outputs.cpu())
 
-        #fig, (ax1, ax2) = plt.subplots(1, 2)
-        #sb.heatmap(test_set[1].cpu(), cmap='viridis', xticklabels=False, yticklabels=False, ax=ax1)
-        #sb.heatmap(outputs.cpu(), cmap='viridis', xticklabels=False, yticklabels=False, ax=ax2)
-        sb.heatmap((test_set[1].cpu() - outputs.cpu()), cmap='viridis', xticklabels=False, yticklabels=False)
+        fig, (ax1, ax2) = plt.subplots(1, 2)
+        ax1.title.set_text('Método de elementos finitos')
+        sb.heatmap(test_set[1].cpu(), cmap='viridis', xticklabels=False, yticklabels=False, ax=ax1)
+        ax2.title.set_text('Calculado por la red neuronal')
+        sb.heatmap(outputs.cpu(), cmap='viridis', xticklabels=False, yticklabels=False, ax=ax2)
+        #sb.heatmap((test_set[1].cpu() - outputs.cpu()), cmap='viridis', xticklabels=False, yticklabels=False)
 
         plt.show()
 
