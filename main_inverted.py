@@ -5,21 +5,24 @@ from src import IO_model
 from src.invertedModels.train import train_model
 from src.invertedModels.evaluate import evaluate_model
 from src.invertedModels.in_ch_300 import build_300in_net, build_300in_2out_net
-from src.invertedModels.in_ch_600 import build_600in_net
 
 ###########################
 #  CONTROL FOR THE MODEL  #
 ###########################
-training_dataset = Dataset.lhs_300_t20_100K
-eval_dataset = Dataset.lhs_300_t20_100K
+training_dataset = Dataset.lhs_300_30K
+eval_dataset = Dataset.lhs_300_30K
 train_model_bool = True
 evaluate_model_bool = True
-num_epochs = 10000
-learning_rate = 0.03
-momentum = 0.8
+full_testing = False
+num_epochs = 3000
+learning_rate = 0.005
+momentum = 0.99
 ###########################
 
-((train_set, validation_set, test_set), target_dev), target_range = data_from_file(training_dataset, inverted=True)
+if full_testing:
+    ((test_set), target_dev), target_range = data_from_file(training_dataset, inverted=True, full=True)
+else:
+    ((train_set, validation_set, test_set), target_dev), target_range = data_from_file(training_dataset, inverted=True)
 
 torch.cuda.empty_cache()
 device = 'cuda' if torch.cuda.is_available() else 'cpu'

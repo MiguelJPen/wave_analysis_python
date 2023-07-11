@@ -9,16 +9,21 @@ from src.models.model import build_model
 ###########################
 #  CONTROL FOR THE MODEL  #
 ###########################
-training_dataset = Dataset.lhs_300_64K
-eval_dataset = Dataset.lhs_300_64K
-train_model_bool = True
+training_dataset = Dataset.lhs_300_30K
+eval_dataset = Dataset.lhs_300_30K
+train_model_bool = False
 evaluate_model_bool = True
-num_epochs = 10000
-learning_rate = 0.03
-momentum = 0.75
+evaluation_graphs = False
+full_testing = False
+num_epochs = 3000
+learning_rate = 0.1
+momentum = 0.99
 ###########################
 
-((train_set, validation_set, test_set), target_dev), target_range = data_from_file(training_dataset)
+if full_testing:
+    ((test_set), target_dev), target_range = data_from_file(training_dataset, full=True)
+else:
+    ((train_set, validation_set, test_set), target_dev), target_range = data_from_file(training_dataset)
 
 torch.cuda.empty_cache()
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -34,4 +39,4 @@ if train_model_bool:
 if evaluate_model_bool:
     model = IO_model.load_model(eval_dataset)
     model = model.to(device)
-    evaluate_model(model, test_set, target_range, target_dev)
+    evaluate_model(model, test_set, target_range, target_dev, evaluation_graphs)
